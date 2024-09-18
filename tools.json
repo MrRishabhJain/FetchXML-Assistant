@@ -1,0 +1,69 @@
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "get_all_entity_names",
+            "description": "Returns a list of all entites present on the user's dataverse org",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "org_url": {
+                        "type": "string",
+                        "description": "The Dataverse org URL eg 'https://org7c9db66f.crm10.dynamics.com'"
+                    }
+                },
+                "required": [
+                    "org_url"
+                ]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_entity_metadata",
+            "description": "For a given entity, returns a list of all attributes and their types.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "org_url": {
+                        "type": "string",
+                        "description": "The Dataverse org URL eg 'https://org7c9db66f.crm10.dynamics.com'"
+                    },
+                    "entity_name": {
+                        "type": "string",
+                        "description": "The name of the entity for which metadata is to be fetched"
+                    }
+                },
+                "required": [
+                    "org_url",
+                    "entity_name"
+                ]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "run_fetchxml_query",
+            "description": "For a given fetch XML query, returns the result of the query.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "fetch_xml_query": {
+                        "type": "string",
+                        "description": "The fetch XML that need to be executed eg <fetch top=\"1\"><entity name=\"account\"/></fetch>"
+                    },
+                    "org_url": {
+                        "type": "string",
+                        "description": "The Dataverse org URL eg 'https://org7c9db66f.crm10.dynamics.com'"
+                    }
+                },
+                "required": [
+                    "fetch_xml_query",
+                    "org_url"
+                ]
+            }
+        }
+    }
+]
