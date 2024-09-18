@@ -10,10 +10,9 @@ status_map = {
     "requires_action": "Using tools...",
     "queued": "Waiting...",
 }
-print()
+
 user_name = "rishjain"
-print(f"Hey @{user_name}! Fetch XML Assistant here. What are you looking for?")
-print()
+
 # Create a thread
 thread = client.beta.threads.create()
 
@@ -99,8 +98,10 @@ def run_thread(prompt, debug = False):
     
 
 if __name__ == "__main__":
+    print()
+    print(f"Hey @{user_name}! Fetch XML Assistant here. What are you looking for?")
+    print()
     while True:
         prompt = input(f"{user_name} >> ")
         resp = run_thread(prompt, True)
         print(resp)
-        
