@@ -16,9 +16,10 @@ print(f"Hey @{user_name}! Fetch XML Assistant here. What are you looking for?")
 print()
 # Create a thread
 thread = client.beta.threads.create()
-while True:
-    prompt = input(f"{user_name} >> ")
-    print()
+
+def run_thread(prompt, debug = False):
+    if debug:
+        print()
     # Add a user question to the thread
     message = client.beta.threads.messages.create(
         thread_id=thread.id,
@@ -42,10 +43,13 @@ while True:
         
         if run.status == 'completed':
             messages = client.beta.threads.messages.list(thread.id)
-            print(messages.data[0].content[0].text.value)
+            resp = messages.data[0].content[0].text.value
+            if debug:
+                print(resp)
         
         elif run.status == 'requires_action':
-            print(status_map[run.status])
+            if debug:
+                print(status_map[run.status])
             # The assistant requires calling some functions
             # and submit the tool outputs back to the run
             if run.required_action.type == 'submit_tool_outputs':
@@ -55,19 +59,22 @@ while True:
                         args = json.loads(tool_call.function.arguments)
                         if tool_call.function.name == 'get_all_entity_names':
                             org_url = args["org_url"]
-                            print("Searching across entities on", org_url)
+                            if debug:
+                                print("Searching across entities on", org_url)
                             output = custom_tools.get_all_entity_names(org_url)
                         
                         elif tool_call.function.name == 'get_entity_metadata':
                             org_url = args["org_url"]
                             entity_name = args["entity_name"]
-                            print("Fetching metadata for:", entity_name)
+                            if debug:
+                                print("Fetching metadata for:", entity_name)
                             output = custom_tools.get_entity_metadata(org_url, entity_name)
                             
                         elif tool_call.function.name == 'run_fetchxml_query':
                             fetch_xml_query = args["fetch_xml_query"]
                             org_url = args["org_url"]
-                            print("Testing the generated query...")
+                            if debug:
+                                print("Testing the generated query...")
                             output = custom_tools.run_fetchxml_query(fetch_xml_query, org_url)
                         
                         tool_outputs.append(
@@ -84,5 +91,16 @@ while True:
                     tool_outputs=tool_outputs
                 )
         else:
-            print(status_map[run.status])
-        print()
+            if debug:
+                print(status_map[run.status])
+        if debug:
+            print()
+    return resp
+    
+
+if __name__ == "__main__":
+    while True:
+        prompt = input(f"{user_name} >> ")
+        resp = run_thread(prompt, True)
+        print(resp)
+        
